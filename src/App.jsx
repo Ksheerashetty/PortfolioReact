@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./App.css";
 import "./index.css";
 import { LoadingScreen } from "./Components/LoadingScreen";
 import { Navbar } from "./Components/Navbar";
@@ -32,3 +31,6 @@ function App() {
 }
 
 export default App;
+
+
+// handwriting
