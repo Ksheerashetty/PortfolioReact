@@ -7,6 +7,7 @@ body {
   font-family: "Space Grotesk", sans-serif;
   background-color: black;
   color: #f3f4f6;
+  overflow-x: hidden;
 }
 
 @layer utilities {
@@ -56,6 +57,68 @@ body {
       opacity: 0;
     }
   }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes glow {
+    0%,
+    100% {
+      filter: drop-shadow(0 0 2px rgba(139, 92, 246, 0.6));
+    }
+    50% {
+      filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.9));
+    }
+  }
+
+  @layer utilities {
+    @keyframes gradient-move {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .hover-animate-gradient:hover {
+      background-size: 200% 200%;
+      animation: gradient-move 3s ease infinite;
+    }
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
+  }
+  @keyframes borderflow {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
 }
 
 .reveal {
@@ -69,10 +132,139 @@ body {
   transform: translateY(0);
 }
 
+.skinner {
+  border: 1px solid rgba(115, 0, 255, 0.212); /* faint border by default */
+  text-align: center;
+  margin: 0.25rem;
+  color: #fff;
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 6px;
+  font-size: 0.875rem; /* matches Tailwind text-sm */
+}
+
+.skinner:before {
+  content: "";
+  background: linear-gradient(
+    90deg,
+    #a855f7,
+    #7e22ce,
+    #db2777,
+    #a855f7,
+    #0bc5ea
+  ); /* purple → violet → fuchsia */
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 300%;
+  z-index: -1;
+  filter: blur(4px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 5px;
+}
+
+.skinner:hover {
+  border: 1px solid transparent; /* hide default border */
+}
+
+.skinner:hover:before {
+  opacity: 1;
+  animation: borderflow 3s linear infinite;
+}
+
+.skinner:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  left: 0;
+  top: 0;
+  border-radius: 5px;
+}
+
+/* Gradient border animation */
+
 @theme {
+  --color-border: hsl(var(--border));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-card: hsl(var(--card));
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-subtle: pulse-subtle 4s ease-in-out infinite;
+  --animate-fade-in: fade-in 0.7s ease-out forwards;
+  --animate-fade-in-delay-1: fade-in 0.7s ease-out 0.2s forwards;
+  ---animate-fade-in-delay-2: fade-in 0.7s ease-out 0.4s forwards;
+  --animate-fade-in-delay-3: fade-in 0.7s ease-out 0.6s forwards;
+  --animate-fade-in-delay-4: fade-in 0.7s ease-out 0.8s forwards;
+  --animate-meteor: meteor 5s linear infinite;
 }
 
 @utility meteor {
   @apply absolute bg-linear-to-r from-white via-white to-transparent rounded-full;
   box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.3);
+}
+
+@utility card-hover {
+  @apply transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg;
+}
+
+@utility gradient-border {
+  @apply relative rounded-md;
+  background: linear-gradient(to right, hsl(var(--card)), hsl(var(--card)));
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+
+@utility cosmic-button {
+  @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium transition-all duration-300 hover:shadow-[0_0_10px_rgba(139,92,246,0.5)]  hover:scale-105 active:scale-95;
+}
+
+@utility star {
+  @apply absolute rounded-full bg-cyan-500;
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.4);
+}
+
+@layer base {
+  :root {
+    --background: 197 94% 79%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --primary: 250 47% 60%;
+    --primary-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --clr1: 299, 45%, 61%;
+    --clr2: 297, 92%, 24%;
+    --gradient-primary: linear-gradient(
+      to right,
+      hsl(var(--clr1)),
+      hsl(var(--clr2))
+    );
+  }
+
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 213 31% 91%;
+    --card: 222 47% 8%;
+    --primary: 250 65% 65%;
+    --primary-foreground: 213 31% 91%;
+    --border: 217 33% 20%;
+    --gradient-primary: linear-gradient(
+      to right,
+      hsl(300, 100%, 14%),
+      hsl(270, 100%, 14%)
+    );
+  }
+  html {
+    @apply scroll-smooth;
+  }
 }

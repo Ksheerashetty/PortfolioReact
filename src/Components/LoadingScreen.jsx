@@ -6,7 +6,7 @@ export const LoadingScreen = ({ onComplete }) => {
   useEffect(() => {
     let index = 0;
     const interval = setInterval(() => {
-      setText((prev) => fullText.substring(0, index));
+      setText((prev) => fullText.substring(0, index));  //address prev
       index++;
       if (index > fullText.length) {
         clearInterval(interval);
