@@ -1,7 +1,7 @@
 import { useState } from "react";
+import RevealOnScroll from "./RevealOnScroll";
 
 export default function Skills() {
-
   const skills = [
     { name: "React", category: "Frontend" },
     { name: "JavaScript", category: "Frontend" },
@@ -34,33 +34,36 @@ export default function Skills() {
       id="Skills"
       className="min-h-screen max-w-full flex flex-col items-center justify-center text-center py-20 px-4"
     >
-      <div className="mx-auto max-w-5xl">
-        <h2 className="text-3xl font-bold mb-8 text-purple-800 text-center">
-          Skills
-        </h2>
-        <div className="flex -flex-wrap justify-center gap-4 mb-12">
-          {categories.map((cat, index) => (
-            <button
-              key={index}
-              className={`px-5 py-2 transition-colors duration-500 rounded-sm capitalize cursor-pointer ${
-                activeCategory === cat
-                  ? "bg-purple-800 text-white"
-                  : "transparent border"
-              }`}
-              onClick={() => setActiveCategory(cat)}
-            >
-              {cat}
-            </button>
-          ))}
+      <RevealOnScroll>
+        {" "}
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-3xl font-bold mb-8 text-purple-800 text-center">
+            Skills
+          </h2>
+          <div className="flex -flex-wrap justify-center gap-4 mb-12">
+            {categories.map((cat, index) => (
+              <button
+                key={index}
+                className={`px-5 py-2 transition-colors duration-500 rounded-sm capitalize cursor-pointer ${
+                  activeCategory === cat
+                    ? "bg-purple-800 text-white"
+                    : "transparent border"
+                }`}
+                onClick={() => setActiveCategory(cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-6 ">
+            {filteredSkills.map((tech, index) => (
+              <div key={index} className="bg-blue-900 skinner px-2 py-3">
+                {tech.name}
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-6 ">
-          {filteredSkills.map((tech, index) => (
-            <div key={index} className="bg-blue-900 skinner px-2 py-3">
-              {tech.name}
-            </div>
-          ))}
-        </div>
-      </div>
+      </RevealOnScroll>
     </section>
   );
 }
