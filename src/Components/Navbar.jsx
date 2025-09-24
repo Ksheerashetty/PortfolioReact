@@ -5,7 +5,12 @@ export const Navbar = ({ isMenuOpen, setIsMenuOpen }) => {
   const menuItems = ["Home", "About", "Skills", "Projects", "Contact"];
 
   useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.screenY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
     document.body.style.overflow = isMenuOpen ? "hidden" : "auto";
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [isMenuOpen]);
   return (
     <nav
